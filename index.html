@@ -12,6 +12,14 @@
 
 <style>
 
+  /*
+     Layout 기준
+     - 뉴스 날짜/제목/간격: 사용자가 업로드한 원본 index(2).html 값 유지
+     - 뉴스 본문 최대 폭: 1280px, 가운데 정렬
+     - 배너: 화면 전체 폭, 데스크톱 높이 280px
+     - body의 기존 10px padding 유지
+  */
+
   /* =====================================================
      전체 페이지
   ===================================================== */
@@ -56,6 +64,87 @@
 
   .news-title a:hover {
     text-decoration: underline;
+  }
+
+
+  /* =====================================================
+     뉴스 배너
+  ===================================================== */
+
+  .news-banner {
+    position: relative;
+
+    /*
+       body의 기존 10px padding은 뉴스 목록에 그대로 적용하고,
+       배너만 화면 좌우 끝까지 확장합니다.
+    */
+    width: calc(100% + 20px);
+    height: 280px;
+
+    margin-top: -10px;
+    margin-right: -10px;
+    margin-bottom: 55px;
+    margin-left: -10px;
+
+    overflow: hidden;
+    background: #000;
+  }
+
+
+  /*
+     Google Sites 본문과 같은 폭 안에서 뉴스 목록을 중앙 정렬합니다.
+     뉴스 항목 자체의 크기와 간격은 업로드한 원본 값을 변경하지 않습니다.
+  */
+  .news-content {
+    width: 100%;
+    max-width: 1280px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+
+  /* 배너 사진을 살짝 어둡게 하여 중앙 제목이 잘 보이게 함 */
+  .news-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.28);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+
+  .news-banner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 37%;
+  }
+
+
+  /* Google Sites 원본처럼 배너 중앙에 표시되는 페이지 제목 */
+  .news-banner-title {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 20px;
+
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 38pt;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+
+    text-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.75);
   }
 
 
@@ -176,27 +265,43 @@
   }
 
 
-  /* 상세기사 이미지 */
+  /* 상세기사 이미지 갤러리 */
+
+  .article-gallery {
+    display: grid;
+    grid-template-columns:
+      repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 28px;
+
+    margin-top: 0;
+    margin-bottom: 38px;
+  }
+
+
+  .article-figure {
+    margin: 0;
+  }
+
 
   .article-image {
     display: block;
 
     width: 100%;
-    max-width: 900px;
-
     height: auto;
 
-    margin: 30px auto;
+    margin: 0 auto;
   }
 
 
   /* 이미지 설명 */
 
   .image-caption {
-    margin-top: -20px;
-    margin-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 0;
 
     font-size: 10.5pt;
+    line-height: 1.5;
 
     text-align: center;
 
@@ -220,6 +325,17 @@
   ===================================================== */
 
   @media (max-width: 700px) {
+
+    .news-banner {
+      height: 210px;
+      margin-bottom: 40px;
+    }
+
+
+    .news-banner-title {
+      font-size: 30pt;
+    }
+
 
     .news-title {
       font-size: 16pt;
@@ -270,11 +386,23 @@
 ===================================================== */
 
 
+const IMAGE_BASE_URL =
+  "https://raw.githubusercontent.com/anceshyeon/ASPROS-homepage/main/images/";
+
+
+const BANNER_IMAGE =
+  "nasa-lunar-walk.jpg";
+
+
 const newsData = [
 
 
   {
     id: "space-conference-2026",
+
+    images: [
+      { file: "ksas-space-conference-2026.jpg", caption: "2026 한국항공우주학회 우주학술대회 단체 사진" }
+    ],
 
     date: "July 2, 2026",
 
@@ -286,34 +414,8 @@ const newsData = [
     content: `
 
       <p>
-        이 페이지는 HTML 내부 상세 페이지 전환 기능을
-        테스트하기 위한 예시 기사입니다.
+        2026 한국항공우주학회 우주학술대회 관련 소식입니다.
       </p>
-
-      <p>
-        여기에 기존 Google Sites 뉴스 페이지의 내용을
-        그대로 옮겨 넣을 수 있습니다.
-      </p>
-
-      <p>
-        기사에 사진을 추가하려면 아래와 같이 작성하면 됩니다.
-      </p>
-
-      <!--
-
-      예시:
-
-      <img
-        class="article-image"
-        src="이미지 URL"
-        alt="학회 단체사진"
-      >
-
-      <div class="image-caption">
-        2026 한국항공우주학회 우주학술대회
-      </div>
-
-      -->
 
     `
   },
@@ -332,11 +434,7 @@ const newsData = [
     content: `
 
       <p>
-        이재인 연구원의 논문 게재 소식입니다.
-      </p>
-
-      <p>
-        이 부분에 기존 뉴스 상세 페이지의 본문을 넣어주세요.
+        이재인 연구원의 &lt;우주기술과 응용&gt; 논문 게재 소식입니다.
       </p>
 
     `
@@ -345,6 +443,11 @@ const newsData = [
 
   {
     id: "internship-2026-2",
+
+    images: [
+      { file: "intern-recruit-2026-2(1).png", caption: "2026-2차 연구실 인턴 모집 안내" },
+      { file: "intern-recruit-2026-2(2).png", caption: "2026-2차 연구실 인턴 모집 분야 및 지원 안내" }
+    ],
 
     date: "June 26, 2026",
 
@@ -357,6 +460,10 @@ const newsData = [
 
   {
     id: "aerospace-department-event",
+
+    images: [
+      { file: "launch-ceremony-poster-2026.png", caption: "연세대학교 대학원 항공우주공학과 출범 기념행사 포스터" }
+    ],
 
     date: "June 25, 2026",
 
@@ -371,6 +478,10 @@ const newsData = [
   {
     id: "yeonsoo-iseb-sgc",
 
+    images: [
+      { file: "iseb-sgc-kim-2026.png", caption: "김연수 연구원 ISEB·SGC 참가학생 선발 안내" }
+    ],
+
     date: "June 18, 2026",
 
     title:
@@ -383,6 +494,11 @@ const newsData = [
 
   {
     id: "teachers-day-2026",
+
+    images: [
+      { file: "teachers-day-2026(1).jpg", caption: "2026 ASPROS/ACL 스승의 날 기념 단체 사진 1" },
+      { file: "teachers-day-2026(2).jpg", caption: "2026 ASPROS/ACL 스승의 날 기념 단체 사진 2" }
+    ],
 
     date: "May 15, 2026",
 
@@ -397,6 +513,11 @@ const newsData = [
   {
     id: "cubesat-workshop-2026",
 
+    images: [
+      { file: "cubesat-developers-workshop-2026(1).jpg", caption: "CubeSat Developers Workshop 2026 참가 사진 1" },
+      { file: "cubesat-developers-workshop-2026(2).jpg", caption: "CubeSat Developers Workshop 2026 참가 사진 2" }
+    ],
+
     date: "May 01, 2026",
 
     title:
@@ -409,6 +530,12 @@ const newsData = [
 
   {
     id: "yeonsoo-award-2025",
+
+    images: [
+      { file: "ksas-spring-kim-2026(1).jpg", caption: "김연수 연구원 우수논문상 수상 사진 1" },
+      { file: "ksas-spring-kim-2026(2).jpg", caption: "김연수 연구원 우수논문상 수상 사진 2" },
+      { file: "ksas-spring-kim-2026(3).jpg", caption: "김연수 연구원 우수논문상 수상 사진 3" }
+    ],
 
     date: "April 14, 2026",
 
@@ -423,6 +550,11 @@ const newsData = [
   {
     id: "ksas-spring-2026",
 
+    images: [
+      { file: "ksas-spring-2026(1).jpg", caption: "2026 한국항공우주학회 춘계학술대회 참가 사진 1" },
+      { file: "ksas-spring-2026(2).jpg", caption: "2026 한국항공우주학회 춘계학술대회 참가 사진 2" }
+    ],
+
     date: "April 06, 2026",
 
     title:
@@ -435,6 +567,10 @@ const newsData = [
 
   {
     id: "ijass-associate-editor",
+
+    images: [
+      { file: "springer-editor-2026.png", caption: "International Journal of Aeronautical and Space Sciences 부편집장 위촉" }
+    ],
 
     date: "April 01, 2026",
 
@@ -449,6 +585,10 @@ const newsData = [
   {
     id: "aerospace-department-2026",
 
+    images: [
+      { file: "aeronautics-recruit-2026.png", caption: "연세대학교 대학원 항공우주공학과 신설 및 모집 안내" }
+    ],
+
     date: "January 06, 2026",
 
     title:
@@ -461,6 +601,10 @@ const newsData = [
 
   {
     id: "internship-2026-1",
+
+    images: [
+      { file: "intern-recruit-2026.png", caption: "2026-1차 연구실 인턴 모집 안내" }
+    ],
 
     date: "January 06, 2026",
 
@@ -475,6 +619,10 @@ const newsData = [
   {
     id: "nuriho-4",
 
+    images: [
+      { file: "yonsei-news-2025.png", caption: "연세소식: 누리호 4차 발사 성공기" }
+    ],
+
     date: "January 02, 2026",
 
     title:
@@ -487,6 +635,11 @@ const newsData = [
 
   {
     id: "new-graduating-students-2025",
+
+    images: [
+      { file: "freshmen-alumni-2025-2(1).jpg", caption: "2025학년도 2학기 ASPROS 신입생 및 졸업생 사진 1" },
+      { file: "freshmen-alumni-2025-2(2).jpg", caption: "2025학년도 2학기 ASPROS 신입생 및 졸업생 사진 2" }
+    ],
 
     date: "September 01, 2025",
 
@@ -563,6 +716,79 @@ function escapeHTML(text) {
 
 
 /* =====================================================
+   상세 기사 이미지 렌더링
+===================================================== */
+
+
+function renderArticleImages(item) {
+
+  if (
+    !Array.isArray(item.images) ||
+    item.images.length === 0
+  ) {
+
+    return "";
+
+  }
+
+
+  const figures =
+    item.images
+      .map(image => {
+
+        const imageURL =
+          IMAGE_BASE_URL +
+          encodeURI(image.file);
+
+
+        return `
+
+          <figure class="article-figure">
+
+            <img
+              class="article-image"
+              src="${imageURL}"
+              alt="${escapeHTML(
+                image.caption || item.title
+              )}"
+              loading="lazy"
+            >
+
+            ${
+              image.caption
+                ? `
+                  <figcaption class="image-caption">
+
+                    ${escapeHTML(image.caption)}
+
+                  </figcaption>
+                `
+                : ""
+            }
+
+          </figure>
+
+        `;
+
+      })
+      .join("");
+
+
+  return `
+
+    <div class="article-gallery">
+
+      ${figures}
+
+    </div>
+
+  `;
+
+}
+
+
+
+/* =====================================================
    뉴스 목록 렌더링
 ===================================================== */
 
@@ -600,11 +826,28 @@ function renderNews(page) {
 
   app.innerHTML = `
 
-    <div id="news-list"></div>
+    <div class="news-banner">
 
-    <div
-      class="pagination"
-      id="pagination">
+      <img
+        src="${IMAGE_BASE_URL}${BANNER_IMAGE}"
+        alt="달 표면의 우주비행사"
+      >
+
+      <h1 class="news-banner-title">
+        News
+      </h1>
+
+    </div>
+
+    <div class="news-content">
+
+      <div id="news-list"></div>
+
+      <div
+        class="pagination"
+        id="pagination">
+      </div>
+
     </div>
 
   `;
@@ -745,7 +988,7 @@ function renderArticle(articleId, previousPage) {
 
   /*
      content가 없는 뉴스의 경우
-     기본 테스트 문장 표시
+     제목을 바탕으로 기본 문장 표시
   */
 
 
@@ -753,17 +996,7 @@ function renderArticle(articleId, previousPage) {
     item.content || `
 
       <p>
-        <strong>상세 페이지 전환 테스트에 성공했습니다.</strong>
-      </p>
-
-      <p>
-        현재 이 뉴스에는 아직 HTML 본문이 입력되어 있지 않습니다.
-      </p>
-
-      <p>
-        newsData의 해당 항목에
-        <code>content</code>를 추가하면
-        이 영역에 기사 본문을 표시할 수 있습니다.
+        ${escapeHTML(item.title)} 관련 소식입니다.
       </p>
 
     `;
@@ -798,6 +1031,8 @@ function renderArticle(articleId, previousPage) {
 
 
       <div class="article-content">
+
+        ${renderArticleImages(item)}
 
         ${articleContent}
 
