@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap"
+      rel="stylesheet">
+
+<style>
+
+  /* =====================================================
+     전체 페이지
+  ===================================================== */
+
+  body {
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    padding: 10px;
+    background-color: transparent;
+    color: #1d2042;
+  }
+
+
+  /* =====================================================
+     뉴스 목록
+  ===================================================== */
+
+  .news-item {
+    margin-bottom: 50pt;
+  }
+
+
+  .news-date {
+    font-size: 11pt;
+    margin-bottom: 8pt;
+    color: #333;
+  }
+
+
+  .news-title {
+    font-size: 18pt;
+    line-height: 1.4;
+  }
+
+
+  .news-title a {
+    color: #1d2042;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+  .news-title a:hover {
+    text-decoration: underline;
+  }
+
+
+  /* =====================================================
+     Pagination
+  ===================================================== */
+
+  .pagination {
+    display: flex;
+    gap: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+
+  .page-btn {
+    font-family: 'Lato', sans-serif;
+
+    padding: 6px 12px;
+
+    border: 1px solid #ccc;
+    background: #fff;
+
+    cursor: pointer;
+
+    border-radius: 4px;
+
+    font-size: 14px;
+
+    color: #1d2042;
+
+    text-decoration: none;
+  }
+
+
+  .page-btn.active {
+    font-weight: bold;
+    background: #e0e0e0;
+  }
+
+
+  .page-btn:hover:not(.active) {
+    background: #f0f0f0;
+  }
+
+
+  /* =====================================================
+     상세 기사 페이지
+  ===================================================== */
+
+  .article-view {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+  }
+
+
+  /* 뒤로가기 */
+
+  .back-link {
+    display: inline-block;
+
+    margin-top: 10px;
+    margin-bottom: 40px;
+
+    color: #1d2042;
+
+    text-decoration: none;
+
+    font-size: 12pt;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+
+  /* 상세기사 날짜 */
+
+  .article-date {
+    font-size: 11pt;
+    color: #555;
+
+    margin-bottom: 12px;
+  }
+
+
+  /* 상세기사 제목 */
+
+  .article-title {
+    font-size: 30pt;
+    line-height: 1.3;
+
+    color: #1d2042;
+
+    margin-top: 0;
+    margin-bottom: 35px;
+  }
+
+
+  /* 상세기사 본문 */
+
+  .article-content {
+    font-size: 13pt;
+    line-height: 1.8;
+
+    color: #222;
+  }
+
+
+  .article-content p {
+    margin-top: 0;
+    margin-bottom: 22px;
+  }
+
+
+  /* 상세기사 이미지 */
+
+  .article-image {
+    display: block;
+
+    width: 100%;
+    max-width: 900px;
+
+    height: auto;
+
+    margin: 30px auto;
+  }
+
+
+  /* 이미지 설명 */
+
+  .image-caption {
+    margin-top: -20px;
+    margin-bottom: 30px;
+
+    font-size: 10.5pt;
+
+    text-align: center;
+
+    color: #666;
+  }
+
+
+  /* 구분선 */
+
+  .article-divider {
+    border: none;
+    border-top: 1px solid #ddd;
+
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+
+  /* =====================================================
+     모바일 대응
+  ===================================================== */
+
+  @media (max-width: 700px) {
+
+    .news-title {
+      font-size: 16pt;
+    }
+
+
+    .article-title {
+      font-size: 24pt;
+    }
+
+
+    .article-content {
+      font-size: 12pt;
+    }
+
+  }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     화면이 출력되는 곳
+===================================================== -->
+
+<div id="app"></div>
+
+
+
+<script>
+
+
+/* =====================================================
+   뉴스 데이터
+=====================================================
+
+   content가 있으면 상세 페이지에 해당 내용 표시
+
+   content가 없으면 테스트용 기본 문장 표시
+
+   현재의 link는 삭제하지 않고 보존해둠.
+   하지만 내부 화면 이동에는 사용하지 않음.
+
+===================================================== */
+
+
+const newsData = [
+
+
+  {
+    id: "space-conference-2026",
+
+    date: "July 2, 2026",
+
+    title: "2026 한국항공우주학회 우주학술대회",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-한국항공우주학회-우주학술대회",
+
+    content: `
+
+      <p>
+        이 페이지는 HTML 내부 상세 페이지 전환 기능을
+        테스트하기 위한 예시 기사입니다.
+      </p>
+
+      <p>
+        여기에 기존 Google Sites 뉴스 페이지의 내용을
+        그대로 옮겨 넣을 수 있습니다.
+      </p>
+
+      <p>
+        기사에 사진을 추가하려면 아래와 같이 작성하면 됩니다.
+      </p>
+
+      <!--
+
+      예시:
+
+      <img
+        class="article-image"
+        src="이미지 URL"
+        alt="학회 단체사진"
+      >
+
+      <div class="image-caption">
+        2026 한국항공우주학회 우주학술대회
+      </div>
+
+      -->
+
+    `
+  },
+
+
+  {
+    id: "jaein-paper-2026",
+
+    date: "July 1, 2026",
+
+    title: "이재인 연구원, <우주기술과 응용> 논문 게재",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/이재인-연구원-우주기술과-응용-논문-게재-승인",
+
+    content: `
+
+      <p>
+        이재인 연구원의 논문 게재 소식입니다.
+      </p>
+
+      <p>
+        이 부분에 기존 뉴스 상세 페이지의 본문을 넣어주세요.
+      </p>
+
+    `
+  },
+
+
+  {
+    id: "internship-2026-2",
+
+    date: "June 26, 2026",
+
+    title: "[7월 17일 마감] 2026-2차 연구실 인턴 모집",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/7월-17일-마감-2026-2차-연구실-인턴-모집"
+  },
+
+
+  {
+    id: "aerospace-department-event",
+
+    date: "June 25, 2026",
+
+    title:
+      "연세대학교 대학원 항공우주공학과 출범 기념행사 (2026.07.10)",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/연세대학교-대학원-항공우주공학과-출범-기념행사-2026-07-10"
+  },
+
+
+  {
+    id: "yeonsoo-iseb-sgc",
+
+    date: "June 18, 2026",
+
+    title:
+      "김연수 연구원, 한국항공우주연구원 주관 국제우주교육위원회(ISEB), 국제청년우주회의(SGC) 참가학생으로 선발",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/김연수-연구원-isebsgc-선발"
+  },
+
+
+  {
+    id: "teachers-day-2026",
+
+    date: "May 15, 2026",
+
+    title:
+      "2026 ASPROS/ACL 스승의 날 기념 단체 사진",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-asprosacl-스승의-날-기념-단체-사진"
+  },
+
+
+  {
+    id: "cubesat-workshop-2026",
+
+    date: "May 01, 2026",
+
+    title:
+      "CubeSat Developers Workshop 2026",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/cubesat-developers-workshop-2026"
+  },
+
+
+  {
+    id: "yeonsoo-award-2025",
+
+    date: "April 14, 2026",
+
+    title:
+      "김연수 연구원 2025 추계학술대회 우수논문상 수상",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/김연수-연구원-2025-추계학술대회-우수논문상-수상"
+  },
+
+
+  {
+    id: "ksas-spring-2026",
+
+    date: "April 06, 2026",
+
+    title:
+      "2026 한국항공우주학회 춘계학술대회",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-한국항공우주학회-춘계학술대회"
+  },
+
+
+  {
+    id: "ijass-associate-editor",
+
+    date: "April 01, 2026",
+
+    title:
+      "조한철 교수 International Journal of Aeronautical and Space Sciences (Springer) 부편집장(Associate Editor) 위촉",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/ijass-associate-editor"
+  },
+
+
+  {
+    id: "aerospace-department-2026",
+
+    date: "January 06, 2026",
+
+    title:
+      "연세대학교 공과대학 대학원 항공우주공학과 신설 안내(2026년 후기 모집)",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/항공우주공학과-신설"
+  },
+
+
+  {
+    id: "internship-2026-1",
+
+    date: "January 06, 2026",
+
+    title:
+      "[1월 16일 마감] 2026-1차 연구실 인턴 모집",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026년-1차-인턴-모집"
+  },
+
+
+  {
+    id: "nuriho-4",
+
+    date: "January 02, 2026",
+
+    title:
+      "[연세소식] 큐브위성에 담긴 거대한 도전, 우리 대학교 연구진이 써 내려간 누리호 4차 발사 성공기",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/누리호-4차발사"
+  },
+
+
+  {
+    id: "new-graduating-students-2025",
+
+    date: "September 01, 2025",
+
+    title:
+      "2025학년도 2학기 ASPROS 신입생 및 졸업생",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/신입생-및-졸업생"
+  },
+
+
+  {
+    id: "aas-aiaa-asc-2025",
+
+    date: "August 31, 2025",
+
+    title:
+      "김지혁 연구원 2025 AAS/AIAA Astrodynamics Specialist Conference 학회 발표",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2025-asc"
+  },
+
+
+  {
+    id: "space-challenge-2025",
+
+    date: "August 30, 2025",
+
+    title:
+      "2025 우주항공청 스페이스챌린지 사업 선정",
+
+    link:
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/우주항공청-스페이스챌린지"
+  }
+
+];
+
+
+
+/* =====================================================
+   설정
+===================================================== */
+
+
+const itemsPerPage = 10;
+
+
+/* =====================================================
+   HTML 특수문자 처리
+
+   중요:
+   "<우주기술과 응용>" 같은 제목을 innerHTML에 바로
+   넣으면 HTML 태그로 오해될 수 있기 때문에 필요함.
+===================================================== */
+
+
+function escapeHTML(text) {
+
+  return String(text)
+
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+
+
+/* =====================================================
+   뉴스 목록 렌더링
+===================================================== */
+
+
+function renderNews(page) {
+
+
+  const totalPages =
+    Math.ceil(newsData.length / itemsPerPage);
+
+
+  /* 페이지 범위 보정 */
+
+  page = Math.max(
+    1,
+    Math.min(page, totalPages)
+  );
+
+
+  const start =
+    (page - 1) * itemsPerPage;
+
+
+  const end =
+    start + itemsPerPage;
+
+
+  const currentItems =
+    newsData.slice(start, end);
+
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <div id="news-list"></div>
+
+    <div
+      class="pagination"
+      id="pagination">
+    </div>
+
+  `;
+
+
+  const newsContainer =
+    document.getElementById("news-list");
+
+
+  currentItems.forEach(item => {
+
+
+    const div =
+      document.createElement("div");
+
+
+    div.className =
+      "news-item";
+
+
+    div.innerHTML = `
+
+      <div class="news-date">
+
+        ${escapeHTML(item.date)}
+
+      </div>
+
+
+      <div class="news-title">
+
+        <a
+          href="#article/${encodeURIComponent(item.id)}/${page}">
+
+          ${escapeHTML(item.title)}
+
+        </a>
+
+      </div>
+
+    `;
+
+
+    newsContainer.appendChild(div);
+
+  });
+
+
+  renderPagination(page);
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+
+/* =====================================================
+   페이지 번호 렌더링
+===================================================== */
+
+
+function renderPagination(currentPage) {
+
+
+  const totalPages =
+    Math.ceil(newsData.length / itemsPerPage);
+
+
+  const container =
+    document.getElementById("pagination");
+
+
+  container.innerHTML = "";
+
+
+  for (
+    let i = 1;
+    i <= totalPages;
+    i++
+  ) {
+
+
+    const link =
+      document.createElement("a");
+
+
+    link.className =
+      "page-btn" +
+      (i === currentPage ? " active" : "");
+
+
+    link.textContent =
+      i;
+
+
+    link.href =
+      `#list/${i}`;
+
+
+    container.appendChild(link);
+
+  }
+
+}
+
+
+
+/* =====================================================
+   상세 기사 렌더링
+===================================================== */
+
+
+function renderArticle(articleId, previousPage) {
+
+
+  const item =
+    newsData.find(
+      news => news.id === articleId
+    );
+
+
+  if (!item) {
+
+    renderNotFound();
+
+    return;
+
+  }
+
+
+  const app =
+    document.getElementById("app");
+
+
+  /*
+     content가 없는 뉴스의 경우
+     기본 테스트 문장 표시
+  */
+
+
+  const articleContent =
+    item.content || `
+
+      <p>
+        <strong>상세 페이지 전환 테스트에 성공했습니다.</strong>
+      </p>
+
+      <p>
+        현재 이 뉴스에는 아직 HTML 본문이 입력되어 있지 않습니다.
+      </p>
+
+      <p>
+        newsData의 해당 항목에
+        <code>content</code>를 추가하면
+        이 영역에 기사 본문을 표시할 수 있습니다.
+      </p>
+
+    `;
+
+
+  app.innerHTML = `
+
+    <article class="article-view">
+
+
+      <a
+        class="back-link"
+        href="#list/${previousPage}">
+
+        ← Back to News
+
+      </a>
+
+
+      <div class="article-date">
+
+        ${escapeHTML(item.date)}
+
+      </div>
+
+
+      <h1 class="article-title">
+
+        ${escapeHTML(item.title)}
+
+      </h1>
+
+
+      <div class="article-content">
+
+        ${articleContent}
+
+      </div>
+
+
+      <hr class="article-divider">
+
+
+      <a
+        class="back-link"
+        href="#list/${previousPage}">
+
+        ← Back to News
+
+      </a>
+
+
+    </article>
+
+  `;
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+
+/* =====================================================
+   없는 기사
+===================================================== */
+
+
+function renderNotFound() {
+
+
+  const app =
+    document.getElementById("app");
+
+
+  app.innerHTML = `
+
+    <article class="article-view">
+
+      <a
+        class="back-link"
+        href="#list/1">
+
+        ← Back to News
+
+      </a>
+
+      <h1 class="article-title">
+        Article Not Found
+      </h1>
+
+      <div class="article-content">
+
+        <p>
+          해당 기사를 찾을 수 없습니다.
+        </p>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+
+/* =====================================================
+   Router
+
+   가능한 주소:
+
+   #list/1
+
+   #list/2
+
+   #article/space-conference-2026/1
+
+===================================================== */
+
+
+function handleRoute() {
+
+
+  const hash =
+    window.location.hash;
+
+
+  /* 첫 실행 */
+
+  if (!hash) {
+
+
+    history.replaceState(
+      null,
+      "",
+      "#list/1"
+    );
+
+
+    renderNews(1);
+
+
+    return;
+
+  }
+
+
+  const route =
+    hash.substring(1).split("/");
+
+
+  /* ---------------------------------------------
+     목록
+  --------------------------------------------- */
+
+
+  if (route[0] === "list") {
+
+
+    const page =
+      parseInt(route[1], 10) || 1;
+
+
+    renderNews(page);
+
+
+    return;
+
+  }
+
+
+  /* ---------------------------------------------
+     상세 기사
+  --------------------------------------------- */
+
+
+  if (route[0] === "article") {
+
+
+    const articleId =
+      decodeURIComponent(route[1] || "");
+
+
+    const previousPage =
+      parseInt(route[2], 10) || 1;
+
+
+    renderArticle(
+      articleId,
+      previousPage
+    );
+
+
+    return;
+
+  }
+
+
+  /* 알 수 없는 주소 */
+
+  renderNews(1);
+
+}
+
+
+
+/* =====================================================
+   주소 변경 감지
+===================================================== */
+
+
+window.addEventListener(
+  "hashchange",
+  handleRoute
+);
+
+
+
+/* =====================================================
+   최초 실행
+===================================================== */
+
+
+handleRoute();
+
+
+</script>
+
+</body>
+
+</html>
