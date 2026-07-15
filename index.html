@@ -27,7 +27,7 @@
   body {
     font-family: 'Lato', sans-serif;
     margin: 0;
-    padding: 10px;
+    padding: 0;
     background-color: transparent;
     color: #1d2042;
   }
@@ -78,13 +78,13 @@
        body의 기존 10px padding은 뉴스 목록에 그대로 적용하고,
        배너만 화면 좌우 끝까지 확장합니다.
     */
-    width: calc(100% + 20px);
+    width: 100%;
     height: 465px;
 
-    margin-top: -10px;
-    margin-right: -10px;
+    margin-top: 0;
+    margin-right: 0;
     margin-bottom: 55px;
-    margin-left: -10px;
+    margin-left: 0;
 
     overflow: hidden;
     background: #000;
@@ -96,10 +96,15 @@
      뉴스 항목 자체의 크기와 간격은 업로드한 원본 값을 변경하지 않습니다.
   */
   .news-content {
+    box-sizing: border-box;
     width: 100%;
     max-width: 1280px;
+
     margin-right: auto;
     margin-left: auto;
+
+    padding-right: 10px;
+    padding-left: 10px;
   }
 
 
