@@ -278,6 +278,47 @@
     margin-bottom: 38px;
   }
 
+  .article-gallery.vertical {
+    grid-template-columns: 1fr;
+  }
+
+  /* 첫 번째 사진은 왼쪽 전체,
+   두 번째와 세 번째 사진은 오른쪽 위아래 */
+  .article-gallery.left-large {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, 280px);
+    gap: 20px;
+  }
+
+  /* 사진 1 */
+  .article-gallery.left-large .article-figure:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  /* 사진 2 */
+  .article-gallery.left-large .article-figure:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  /* 사진 3 */
+  .article-gallery.left-large .article-figure:nth-child(3) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .article-gallery.left-large .article-figure {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .article-gallery.left-large .article-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
   .article-figure {
     margin: 0;
@@ -288,8 +329,8 @@
     display: block;
 
     width: 100%;
+    max-width: 100%;
     height: auto;
-
     margin: 0 auto;
   }
 
@@ -319,6 +360,80 @@
     margin-bottom: 40px;
   }
 
+  /* 상세기사 2컬럼 레이아웃 */
+  .article-two-column {
+    display: grid;
+    grid-template-columns: minmax(0, 2.5fr) minmax(220px, 1.5fr);
+    gap: 60px;
+
+    align-items: start;
+  }
+
+
+  /* 각 컬럼 제목 */
+  .article-column-title {
+    margin-top: 0;
+    margin-bottom: 14px;
+
+    font-size: 15pt;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+
+  /* 2컬럼 내부 목록 */
+  .article-two-column ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 20px;
+  }
+
+
+  .article-two-column li {
+    margin-bottom: 10px;
+  }
+
+
+  /* 오른쪽 문의사항 영역 */
+  .article-contact {
+    font-size: 12pt;
+    line-height: 1.7;
+  }
+
+
+  .article-contact a {
+    color: #1d2042;
+    text-decoration: underline;
+  }
+
+
+  /* 모바일에서는 세로 배치 */
+  @media (max-width: 700px) {
+
+    .article-two-column {
+      grid-template-columns: 1fr;
+      gap: 35px;
+    }
+
+    .article-gallery.left-large {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+
+    .article-gallery.left-large .article-figure:nth-child(1),
+    .article-gallery.left-large .article-figure:nth-child(2),
+    .article-gallery.left-large .article-figure:nth-child(3) {
+      grid-column: auto;
+      grid-row: auto;
+      height: auto;
+    }
+
+    .article-gallery.left-large .article-image {
+      height: auto;
+      object-fit: contain;
+    }
+
+  }
 
   /* =====================================================
      모바일 대응
@@ -401,7 +516,7 @@ const newsData = [
     id: "space-conference-2026",
 
     images: [
-      { file: "ksas-space-conference-2026.jpg", caption: "2026 한국항공우주학회 우주학술대회 단체 사진" }
+      { file: "ksas-space-conference-2026.jpg", width: "900px"}
     ],
 
     date: "July 2, 2026",
@@ -414,8 +529,39 @@ const newsData = [
     content: `
 
       <p>
-        2026 한국항공우주학회 우주학술대회 관련 소식입니다.
+        2026년 6월 24일부터 26일까지 부산에서 개최된
+        2026 한국항공우주학회 우주학술대회에
+        ASPROS 연구원 4명이 참석하였습니다.
+        이재인 연구원, 김형진 연구원, 김재현 연구원,
+        곽태환 연구원이 참석하였으며,
+        각자 아래의 연구주제에 대해 발표를 진행하였습니다.
       </p>
+
+      <ul>
+        <li>
+          <strong>이재인 연구원</strong><br>
+          "슬라이딩 모드 외란 관측기 기반 외란 분리를 이용한
+          위성 질량 불확실성 추정 기법 연구"
+        </li>
+
+        <li>
+          <strong>김형진 연구원</strong><br>
+          "외란 관측기를 결합한 제약운동의 기본 방정식 기반
+          지구-달 CR3BP 주기 자세 추종"
+        </li>
+
+        <li>
+          <strong>김재현 연구원</strong><br>
+          "원자산소 침식 모니터링을 위한
+          액티노미터 센서의 응답 특성 분석"
+        </li>
+
+        <li>
+          <strong>곽태환 연구원</strong><br>
+          "우주기반 우주감시를 위한
+          각도 기반 정밀 상대궤도 결정 알고리즘"
+        </li>
+      </ul>
 
     `
   },
@@ -434,7 +580,24 @@ const newsData = [
     content: `
 
       <p>
-        이재인 연구원의 &lt;우주기술과 응용&gt; 논문 게재 소식입니다.
+        ASPORS 연구실 소속 이재인 연구원(인공위성시스템학과 석사 3학기)이 참여한 
+        논문 "우주 기반 태양광 발전 시스템 연구 동향"이 한국연구재단의 등재학술지인 &lt;우주기술과 응용&gt;에 게재되었습니다.
+      </p>
+      <p>
+        이재인 연구원은 산업통상자원부 산업기술알키미스트프로젝트사업에 참여하여 
+        우주 기반 태양광 발전 시스템의 핵심 구성 요소인 무선 전력 전송 기술을 연구하였습니다.
+      </p>
+      <p>
+        논문 게재를 진심으로 축하합니다!
+      </p>
+      
+      <p>
+        <a
+          href="https://www.jstna.org/archive/view_article?pid=jsta-6-2-107"
+          target="_blank"
+          rel="noopener noreferrer">
+          논문 바로가기
+        </a>
       </p>
 
     `
@@ -445,8 +608,8 @@ const newsData = [
     id: "internship-2026-2",
 
     images: [
-      { file: "intern-recruit-2026-2(1).png", caption: "2026-2차 연구실 인턴 모집 안내" },
-      { file: "intern-recruit-2026-2(2).png", caption: "2026-2차 연구실 인턴 모집 분야 및 지원 안내" }
+      { file: "intern-recruit-2026-2(1).png"},
+      { file: "intern-recruit-2026-2(2).png"}
     ],
 
     date: "June 26, 2026",
@@ -454,7 +617,70 @@ const newsData = [
     title: "[7월 17일 마감] 2026-2차 연구실 인턴 모집",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/7월-17일-마감-2026-2차-연구실-인턴-모집"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/7월-17일-마감-2026-2차-연구실-인턴-모집",
+
+    content: `
+
+      <div class="article-two-column">
+
+        <section>
+
+          <h2 class="article-column-title">
+            항공우주공학과 우주비행제어연구실
+            자율우주로봇시스템연구실<br>
+            2026-2차 인턴 모집
+          </h2>
+
+          <ul>
+            <li>
+              지원서 접수 기간:
+              2026년 7월 6일(월) - 17일(금)
+            </li>
+
+            <li>
+              선정 결과 통보:
+              2026년 7월 24일(금) 예상
+            </li>
+
+            <li>
+              인턴 활동 기간:
+              2026년 8월 -
+            </li>
+          </ul>
+
+        </section>
+
+
+        <aside class="article-contact">
+
+          <h2 class="article-column-title">
+            문의사항
+          </h2>
+
+          <ul>
+            <li>
+              정두영 통합과정 /
+              <a href="mailto:rei0119@yonsei.ac.kr">
+                rei0119@yonsei.ac.kr
+              </a>
+            </li>
+
+            <li>
+              연구실 사이트 /
+              <a
+                href="http://acl.yonsei.ac.kr/"
+                target="_blank"
+                rel="noopener noreferrer">
+                http://acl.yonsei.ac.kr/
+              </a>
+            </li>
+          </ul>
+
+        </aside>
+
+      </div>
+
+`
   },
 
 
@@ -462,7 +688,7 @@ const newsData = [
     id: "aerospace-department-event",
 
     images: [
-      { file: "launch-ceremony-poster-2026.png", caption: "연세대학교 대학원 항공우주공학과 출범 기념행사 포스터" }
+      { file: "launch-ceremony-poster-2026.png", width: "800px"}
     ],
 
     date: "June 25, 2026",
@@ -471,7 +697,26 @@ const newsData = [
       "연세대학교 대학원 항공우주공학과 출범 기념행사 (2026.07.10)",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/연세대학교-대학원-항공우주공학과-출범-기념행사-2026-07-10"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/연세대학교-대학원-항공우주공학과-출범-기념행사-2026-07-10",
+
+    content: `
+
+      <p>
+        2026년 7월 10일 (금),
+        항공우주공학과 출범 기념행사가 예정되어 있습니다.
+      </p>
+
+      <ul>
+        <li>
+          일시: 2026.07.10 (금) 10:00 - 13:00
+        </li>
+
+        <li>
+          장소: 연세대학교 백양누리 그랜드볼룸
+        </li>
+      </ul>
+
+    `
   },
 
 
@@ -479,7 +724,7 @@ const newsData = [
     id: "yeonsoo-iseb-sgc",
 
     images: [
-      { file: "iseb-sgc-kim-2026.png", caption: "김연수 연구원 ISEB·SGC 참가학생 선발 안내" }
+      { file: "iseb-sgc-kim-2026.png", width: "700px"}
     ],
 
     date: "June 18, 2026",
@@ -488,16 +733,46 @@ const newsData = [
       "김연수 연구원, 한국항공우주연구원 주관 국제우주교육위원회(ISEB), 국제청년우주회의(SGC) 참가학생으로 선발",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/김연수-연구원-isebsgc-선발"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/김연수-연구원-isebsgc-선발",
+
+    content: `
+
+      <p>
+        ASPROS 연구실 소속 김연수 연구원(천문우주학과 석사 2학기)이 한국항공우주연구원(이하 항우연)이 
+        주관하는 국제우주교육위원회(ISEB) 및 국제청년우주회의(SGC) 참가 학생으로 선발되었습니다.
+      </p>
+
+      <p>
+        이번 프로그램에는 국내에서 총 8명의 학생이 선발되었으며, 김연수 연구원은 그중 최우수 성적으로 선발되었습니다.
+      </p>
+
+      <p>
+        김연수 연구원은 항우연의 지원을 받아, 오는 10월 튀르키예 안탈리아에서 개최되는 
+        2026 IAC(International Astronautical Congress)와 연계하여 열리는 ISEB 및 SGC 프로그램에 참가할 예정입니다. 
+        이를 통해 국제청년우주회의 개막식 및 주요 프로그램에 참여하고, 
+        국제우주교육위원회 총회에 참석하며, 각국 우주기관 대표들과 교류하는 기회를 갖게 됩니다.
+      </p>
+
+      <p>
+        김연수 연구원의 선발을 진심으로 축하합니다!
+      </p>
+
+      <p>
+        https://www.kari.re.kr/kor/article/ATCL90a22172e/18409
+      </p>
+
+    `
   },
 
 
   {
     id: "teachers-day-2026",
 
+    imageLayout: "vertical",
+
     images: [
-      { file: "teachers-day-2026(1).jpg", caption: "2026 ASPROS/ACL 스승의 날 기념 단체 사진 1" },
-      { file: "teachers-day-2026(2).jpg", caption: "2026 ASPROS/ACL 스승의 날 기념 단체 사진 2" }
+      { file: "teachers-day-2026(1).jpg", width: "900px"},
+      { file: "teachers-day-2026(2).jpg", width: "900px"}
     ],
 
     date: "May 15, 2026",
@@ -506,7 +781,24 @@ const newsData = [
       "2026 ASPROS/ACL 스승의 날 기념 단체 사진",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-asprosacl-스승의-날-기념-단체-사진"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-asprosacl-스승의-날-기념-단체-사진",
+
+    content: `
+
+      <p>
+        2026년 스승의 날을 기념하여 ASPROS/ACL 구성원들이 함께 단체 사진을 촬영하였습니다. 
+      </p>
+
+      <p>
+        항상 아낌없는 지도와 격려를 해주시는 교수님께 감사의 마음을 전하며, 
+        연구실 구성원 모두가 함께하는 뜻깊은 시간을 가졌습니다.
+      </p>
+
+      <p>
+        앞으로도 ASPROS/ACL은 서로 협력하며 활발한 연구 활동을 이어가겠습니다.
+      </p>
+
+    `
   },
 
 
@@ -514,8 +806,8 @@ const newsData = [
     id: "cubesat-workshop-2026",
 
     images: [
-      { file: "cubesat-developers-workshop-2026(1).jpg", caption: "CubeSat Developers Workshop 2026 참가 사진 1" },
-      { file: "cubesat-developers-workshop-2026(2).jpg", caption: "CubeSat Developers Workshop 2026 참가 사진 2" }
+      { file: "cubesat-developers-workshop-2026(1).jpg"},
+      { file: "cubesat-developers-workshop-2026(2).jpg"}
     ],
 
     date: "May 01, 2026",
@@ -524,17 +816,34 @@ const newsData = [
       "CubeSat Developers Workshop 2026",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/cubesat-developers-workshop-2026"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/cubesat-developers-workshop-2026",
+
+    content: `
+
+      <p>
+        2026년 4월 14일부터 16일까지 미국 캘리포니아주 Cal Poly, San Luis Obispo에서 개최된 
+        CubeSat Developers Workshop 2026에 ASPROS의 이재인 연구원(인공위성시스템학과 석사 3학기)이 
+        참석하여 아래의 연구주제에 대해 발표를 진행하였습니다.
+      </p>
+
+      <p>
+        "Ground Segment Operation and On-Orbit Validation of the BEE-1000 CubeSat"
+      </p>
+
+
+    `
   },
 
 
   {
     id: "yeonsoo-award-2025",
 
+    imageLayout: "left-large",
+
     images: [
-      { file: "ksas-spring-kim-2026(1).jpg", caption: "김연수 연구원 우수논문상 수상 사진 1" },
-      { file: "ksas-spring-kim-2026(2).jpg", caption: "김연수 연구원 우수논문상 수상 사진 2" },
-      { file: "ksas-spring-kim-2026(3).jpg", caption: "김연수 연구원 우수논문상 수상 사진 3" }
+      { file: "ksas-spring-kim-2026(1).jpg"},
+      { file: "ksas-spring-kim-2026(2).jpg"},
+      { file: "ksas-spring-kim-2026(3).jpg"}
     ],
 
     date: "April 14, 2026",
@@ -543,7 +852,22 @@ const newsData = [
       "김연수 연구원 2025 추계학술대회 우수논문상 수상",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/김연수-연구원-2025-추계학술대회-우수논문상-수상"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/김연수-연구원-2025-추계학술대회-우수논문상-수상",
+
+    content: `
+
+      <p>
+        ASPROS의 김연수 연구원(천문우주학과 석사 2학기)이 2025 한국항공우주학회 추계학술대회에서 발표한 논문으로 
+        우수 논문상을 수상하였습니다. 
+        시상식은 2026 한국항공우주학회 춘계학술대회에서 진행되었으며, 
+        수상 논문의 제목은 '가변 스텝 Time Delay Control을 이용한 우주비행체의 자세 제어'입니다.
+      </p>
+
+      <p>
+        김연수 연구원의 수상을 진심으로 축하합니다!
+      </p>
+
+    `
   },
 
 
@@ -551,8 +875,8 @@ const newsData = [
     id: "ksas-spring-2026",
 
     images: [
-      { file: "ksas-spring-2026(1).jpg", caption: "2026 한국항공우주학회 춘계학술대회 참가 사진 1" },
-      { file: "ksas-spring-2026(2).jpg", caption: "2026 한국항공우주학회 춘계학술대회 참가 사진 2" }
+      { file: "ksas-spring-2026(1).jpg"},
+      { file: "ksas-spring-2026(2).jpg"}
     ],
 
     date: "April 06, 2026",
@@ -561,7 +885,60 @@ const newsData = [
       "2026 한국항공우주학회 춘계학술대회",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-한국항공우주학회-춘계학술대회"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026-한국항공우주학회-춘계학술대회",
+
+    content: `
+
+      <p>
+        2026년 3월 31일부터 4월 3일까지 개최된
+        2026 한국항공우주학회 춘계학술대회에
+        ASPROS 연구원 6명이 참석하였습니다.
+        김연수 연구원, 김재현 연구원, 양대원 연구원,
+        이준원 연구원, 조상현 연구원, 진성민 연구원이 참석하였으며
+        각자 아래의 연구주제에 대해 발표를 진행하였습니다.
+      </p>
+
+      <ul>
+        <li>
+          <strong>이준원 연구원</strong><br>
+          "Range-Only 상대 항법에서 발생하는 Mirror Ambiguity 해소를 위한
+          최적 기동 설계 및 검증"<br>
+          "위성-지상국 광통신을 위한 100kg급 위성의
+          FSM 기반 PAT 알고리즘 기초 분석"
+        </li>
+
+        <li>
+          <strong>조상현 연구원</strong><br>
+          "트랜스포머 모델을 이용한
+          비협조 위성의 상대 Pose 추정"
+        </li>
+
+        <li>
+          <strong>김연수 연구원</strong><br>
+          "비주기적 비선형 강건 제어 기법 VTDC의
+          위성 자세제어 임베디드 시스템 적용 시뮬레이션"
+        </li>
+
+        <li>
+          <strong>양대원 연구원</strong><br>
+          "심층강화학습 기반 비협조물체
+          자율 궤도상 점검 경로 계획"
+        </li>
+
+        <li>
+          <strong>김재현 연구원</strong><br>
+          "탄소 기반 원자산소 침식 모니터링 센서(AOS)
+          개발 현황"
+        </li>
+
+        <li>
+          <strong>진성민 연구원</strong><br>
+          "우주기반 우주감시 임무 궤도 설계에 따른
+          관측 특성 및 임무성능 영향성 분석"
+        </li>
+      </ul>
+
+    `
   },
 
 
@@ -578,7 +955,27 @@ const newsData = [
       "조한철 교수 International Journal of Aeronautical and Space Sciences (Springer) 부편집장(Associate Editor) 위촉",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/ijass-associate-editor"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/ijass-associate-editor",
+
+    content: `
+
+      <p>
+        ASPROS의 조한철 교수가
+        SCIE 저널인
+        International Journal of Aeronautical and Space Sciences
+        (Springer)의 부편집장(Associate Editor)으로 위촉되었습니다.
+      </p>
+
+      <p>
+        <a
+          href="https://link.springer.com/journal/42405/editorial-board"
+          target="_blank"
+          rel="noopener noreferrer">
+          Editorial Board 바로가기
+        </a>
+      </p>
+
+    `
   },
 
 
@@ -586,7 +983,7 @@ const newsData = [
     id: "aerospace-department-2026",
 
     images: [
-      { file: "aeronautics-recruit-2026.png", caption: "연세대학교 대학원 항공우주공학과 신설 및 모집 안내" }
+      { file: "aeronautics-recruit-2026.png"}
     ],
 
     date: "January 06, 2026",
@@ -595,7 +992,27 @@ const newsData = [
       "연세대학교 공과대학 대학원 항공우주공학과 신설 안내(2026년 후기 모집)",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/항공우주공학과-신설"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/항공우주공학과-신설",
+
+    content: `
+
+      <ul>
+        <li>
+          조한철, 박상영 교수님 소속이 이과대학 천문우주학과 → 공과대학 항공우주공학과로 변경됩니다. 
+          (2026년 9월 1일 부)
+        </li>
+
+        <li>
+          조한철, 박상영 교수님 지도 희망 시, 천문우주학과 대학원 대신 항공우주공학과 대학원에 지원해야 합니다.
+        </li>
+
+        <li>
+          인공위성시스템학과 대학원(계약학과)은 항공우주공학과 대학원과 별개로 유지됩니다.
+        </li>
+      </ul>
+
+
+    `
   },
 
 
@@ -603,7 +1020,7 @@ const newsData = [
     id: "internship-2026-1",
 
     images: [
-      { file: "intern-recruit-2026.png", caption: "2026-1차 연구실 인턴 모집 안내" }
+      { file: "intern-recruit-2026.png", width: "600px"}
     ],
 
     date: "January 06, 2026",
@@ -612,7 +1029,71 @@ const newsData = [
       "[1월 16일 마감] 2026-1차 연구실 인턴 모집",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026년-1차-인턴-모집"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2026년-1차-인턴-모집",
+
+    content: `
+
+      <p>
+        <a
+          href="https://aspros.yonsei.ac.kr/home"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="text-decoration: underline;"
+        >
+          ASPROS
+        </a>
+        와
+        <a
+          href="http://acl.yonsei.ac.kr/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="text-decoration: underline;"
+        >
+          ACL
+        </a>
+        에서 2026년도 1차 연구실 인턴을 모집합니다. 
+        자세한 사항은 다음 페이지를 방문하여 참고하기 바랍니다.
+      </p>
+
+      <p>
+        <a
+          href="http://acl.yonsei.ac.kr/internship_202601/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="
+            color: #1a73e8;
+            text-decoration: underline;
+            font-style: italic;
+            font-weight: 700
+          "
+        >
+          2026년도 1차 인턴 모집 요강
+        </a>
+      </p>
+        
+      <p>
+        인턴에 지원하고자 하는 학생은 아래의 지원서 양식 및 지원서 양식에 명시한 첨부서류를 함께 이메일로 접수 부탁드립니다.
+      </p>
+      
+      <p>
+        <span
+          style="
+            color: #1a73e8;
+            text-decoration: underline;
+            font-style: italic;
+            font-weight: 700
+          "
+        >
+          Intern Application Form
+        </span>
+      </p>
+      
+      <p>
+        제출처: 정두영 통합과정 / rei0119@yonsei.ac.kr
+      </p>
+
+
+    `
   },
 
 
@@ -620,7 +1101,7 @@ const newsData = [
     id: "nuriho-4",
 
     images: [
-      { file: "yonsei-news-2025.png", caption: "연세소식: 누리호 4차 발사 성공기" }
+      { file: "yonsei-news-2025.png"}
     ],
 
     date: "January 02, 2026",
@@ -629,16 +1110,40 @@ const newsData = [
       "[연세소식] 큐브위성에 담긴 거대한 도전, 우리 대학교 연구진이 써 내려간 누리호 4차 발사 성공기",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/누리호-4차발사"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/누리호-4차발사",
+
+    content: `
+
+      <p>
+        박상영 교수님이 이끄시는 ACL과
+        조한철 교수님이 이끄시는 ASPROS 소속
+        인공위성시스템학과 학생들이 주축이 되어
+        위성 본체 개발을 담당한
+        BEE-1000과 COSMIC에 관한 뉴스가
+        연세소식에 게재되었습니다.
+      </p>
+
+      <p>
+        <a
+          href="https://news.yonsei.ac.kr/kr/academia/detail?bbSeq=35538"
+          target="_blank"
+          rel="noopener noreferrer">
+          연세소식 기사 바로가기
+        </a>
+      </p>
+
+    `
   },
 
 
   {
     id: "new-graduating-students-2025",
 
+    imageLayout: "vertical",
+
     images: [
-      { file: "freshmen-alumni-2025-2(1).jpg", caption: "2025학년도 2학기 ASPROS 신입생 및 졸업생 사진 1" },
-      { file: "freshmen-alumni-2025-2(2).jpg", caption: "2025학년도 2학기 ASPROS 신입생 및 졸업생 사진 2" }
+      { file: "freshmen-alumni-2025-2(1).jpg", width: "700px"},
+      { file: "freshmen-alumni-2025-2(2).jpg", width: "700px"}
     ],
 
     date: "September 01, 2025",
@@ -647,7 +1152,21 @@ const newsData = [
       "2025학년도 2학기 ASPROS 신입생 및 졸업생",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/신입생-및-졸업생"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/신입생-및-졸업생",
+
+    content: `
+
+      <p>
+        이번 2025학년도 2학기부터 이현호 연구원(석·박사 통합과정), 김연수 연구원(석사과정), 김현중 연구원(석사과정)이 
+        ASPROS 연구실에 새롭게 합류하였습니다. 진심으로 환영하며, 앞으로의 활약을 기대합니다. 
+      </p>
+
+      <p>
+        2023학년도 2학기부터 ASPROS에서 열심히 연구해 온 김지혁 연구원이 2025년 8월 석사학위를 받았습니다.
+        ASPROS의 공식적인 첫 졸업생입니다. 졸업을 진심으로 축하드립니다.
+      </p>
+
+    `
   },
 
 
@@ -660,7 +1179,18 @@ const newsData = [
       "김지혁 연구원 2025 AAS/AIAA Astrodynamics Specialist Conference 학회 발표",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/2025-asc"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/2025-asc",
+
+    content: `
+
+      <p>
+        김지혁 연구원이 지난 8월 미국항공우주학회가 주최하고 미국 보스턴에서 열린 
+        2025 AAS/AIAA Astrodynamics Specialist Conference에서 
+        "Adaptive Sliding Mode Control Barrier Functions for Multiple State Constraints"라는 
+        제목으로 최신 연구내용을 발표했습니다.
+      </p>
+
+    `
   },
 
 
@@ -673,7 +1203,23 @@ const newsData = [
       "2025 우주항공청 스페이스챌린지 사업 선정",
 
     link:
-      "https://sites.google.com/yonsei.ac.kr/aspros/news/우주항공청-스페이스챌린지"
+      "https://sites.google.com/yonsei.ac.kr/aspros/news/우주항공청-스페이스챌린지",
+
+    content: `
+
+      <p>
+        2025 우주항공청 스페이스챌린지 사업에
+        조한철 교수가 한국항공우주연구원과 공동으로 제출한
+        "화성 탐사를 위한 화성대기 진입-감속-착륙 핵심 기술 개발"이
+        선정되었습니다.
+        2028년까지
+        "화성 대기 진입 유도 및 자세제어 기술",
+        "낙하산 전개 시점 판단 기술",
+        "초음속 낙하산 시스템 설계" 등을
+        연구할 예정입니다.
+      </p>
+
+    `
   }
 
 ];
@@ -686,6 +1232,19 @@ const newsData = [
 
 
 const itemsPerPage = 10;
+
+let savedListPage = 1;
+let savedListScrollY = 0;
+let shouldRestoreListScroll = false;
+
+
+/*
+   크롬 뒤로가기 시 브라우저의 자동 스크롤 복원과
+   코드의 수동 복원이 충돌하지 않도록 설정
+*/
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
 
 
 /* =====================================================
@@ -752,6 +1311,7 @@ function renderArticleImages(item) {
                 image.caption || item.title
               )}"
               loading="lazy"
+              style="width: ${image.width || "100%"};"
             >
 
             ${
@@ -774,14 +1334,17 @@ function renderArticleImages(item) {
       .join("");
 
 
+  const layoutClass =
+    item.imageLayout === "left-large"
+      ? "left-large"
+      : item.imageLayout === "vertical"
+        ? "vertical"
+        : "";
+  
   return `
-
-    <div class="article-gallery">
-
+    <div class="article-gallery ${layoutClass}">
       ${figures}
-
     </div>
-
   `;
 
 }
@@ -890,6 +1453,18 @@ function renderNews(page) {
 
     `;
 
+    
+    const articleLink = 
+      div.querySelector(".news-title a")
+
+    articleLink.addEventListener(
+      "click",
+      () => {
+        savedListPage = page;
+        savedListScrollY = window.scrollY;
+        shouldRestoreListScroll = true;
+      }
+    );
 
     newsContainer.appendChild(div);
 
@@ -899,10 +1474,47 @@ function renderNews(page) {
   renderPagination(page);
 
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  /*
+     크롬 뒤로가기로 기사에서 뉴스 목록으로 돌아온 경우,
+     기사를 열기 직전의 스크롤 위치를 복원
+  */
+  if (
+    shouldRestoreListScroll &&
+    page === savedListPage
+  ) {
+
+    const restoreY =
+      savedListScrollY;
+
+
+    shouldRestoreListScroll =
+      false;
+
+
+    /*
+       뉴스 목록이 화면에 완전히 배치된 다음 복원
+    */
+    requestAnimationFrame(() => {
+
+      requestAnimationFrame(() => {
+
+        window.scrollTo({
+          top: restoreY,
+          behavior: "auto"
+        });
+
+      });
+
+    });
+
+  } else {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
 
 }
 
@@ -962,7 +1574,12 @@ function renderPagination(currentPage) {
 /* =====================================================
    상세 기사 렌더링
 ===================================================== */
+function returnToNews(page) {
+  shouldRestoreListScroll = true;
 
+  window.location.hash =
+    `list/${page}`;
+}
 
 function renderArticle(articleId, previousPage) {
 
@@ -1009,7 +1626,11 @@ function renderArticle(articleId, previousPage) {
 
       <a
         class="back-link"
-        href="#list/${previousPage}">
+        href="#list/${previousPage}"
+        onclick="
+          returnToNews(${previousPage});
+          return false;
+          ">
 
         ← Back to News
 
@@ -1044,7 +1665,11 @@ function renderArticle(articleId, previousPage) {
 
       <a
         class="back-link"
-        href="#list/${previousPage}">
+        href="#list/${previousPage}"
+        onclick="
+          returnToNews(${previousPage});
+          return false;
+          ">
 
         ← Back to News
 
