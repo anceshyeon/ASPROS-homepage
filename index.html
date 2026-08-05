@@ -325,6 +325,37 @@
     object-fit: cover;
   }
 
+    /* 세로 사진 1장 + 가로 사진 1장 */
+  .article-gallery.mixed-two {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 20px;
+    height: 520px;
+  }
+
+  .article-gallery.mixed-two .article-figure {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .article-gallery.mixed-two .article-image {
+    width: 100% !important;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+  }
+
+  /* 첫 번째 세로 사진의 사람들을 조금 아래쪽에 맞춤 */
+  .article-gallery.mixed-two .article-figure:nth-child(1) .article-image {
+    object-position: center center;
+  }
+
+  /* 두 번째 가로 사진은 가운데 기준으로 자름 */
+  .article-gallery.mixed-two .article-figure:nth-child(2) .article-image {
+    object-position: center center;
+  }
+
   .article-figure {
     margin: 0;
   }
@@ -438,6 +469,20 @@
       object-fit: contain;
     }
 
+    .article-gallery.mixed-two {
+      grid-template-columns: 1fr;
+      height: auto;
+    }
+
+    .article-gallery.mixed-two .article-figure {
+      height: auto;
+    }
+
+    .article-gallery.mixed-two .article-image {
+      height: auto;
+      object-fit: contain;
+    }
+
   }
 
   /* =====================================================
@@ -507,7 +552,10 @@
 
 
 const IMAGE_BASE_URL =
-  "https://raw.githubusercontent.com/anceshyeon/ASPROS-homepage/main/images/";
+ "https://raw.githubusercontent.com/anceshyeon/ASPROS-homepage/main/images/";
+
+// 코드 push 전 image 사이즈 확인용 (local image dir)
+// const IMAGE_BASE_URL = "./images/";
 
 
 const BANNER_IMAGE =
@@ -515,6 +563,52 @@ const BANNER_IMAGE =
 
 
 const newsData = [
+  {
+    id: "astrodynamics-specialist-conference-2026",
+
+    imageLayout: "mixed-two",
+
+    images: [
+      { file: "2026-asc-conference(1).jpg", width: "400px"},
+      { file: "2026-asc-conference(2).jpg", width: "900px"}
+    ],
+
+    date: "Aug 05, 2026",
+
+    title: "2026 AAS/AIAA Astrodynamics Specialist Conference",
+
+    content: `
+      <p>
+        2026년 7월 26일부터 30일까지 Whistler, BC, Canada에서 개최된 AAS/AIAA Astrodynamics Specialist Conference에 
+        ASPROS 연구원들이 참석하였습니다. ASC에 참석한 ASPROS 연구원은 김연수 연구원, 이재인 연구원, 정태우 연구원입니다. 또한
+        박찬덕 교수님의 지도를 받고있는 김관영 연구원도 ASPROS 연구원들과 일정을 함께 하였습니다. 연구원들은 각자 아래의 주제에 대해
+        발표를 진행하였습니다.
+      </p>
+      
+      <ul>
+        <li>
+          <strong>김연수 연구원</strong><br>
+          "Robust Aperiodic Drag-based Orbit Control against Atmospheric 
+          Uncertainties Using Variable Step Time Delay Control"
+        </li>
+
+        <li>
+          <strong>이재인 연구원</strong><br>
+          "Predictor-assisted Image-based Adaptive Sliding Mode Control 
+          with Disturbance Observation for Spacecraft Target Pointing"
+        </li>
+      
+        <li>
+          <strong>정태우 연구원</strong><br>
+          "A Novel Costate Initialization Method for Solving Bang-Bang Optimal Control Problems"
+        </li>
+      </ul>
+      `
+
+
+  },
+
+
   {
     id: "department-launch-ceremony-2026",
 
@@ -1378,7 +1472,9 @@ function renderArticleImages(item) {
       ? "left-large"
       : item.imageLayout === "vertical"
         ? "vertical"
-        : "";
+        : item.imageLayout === "mixed-two"
+          ? "mixed-two"
+          : ""; 
   
   return `
     <div class="article-gallery ${layoutClass}">
