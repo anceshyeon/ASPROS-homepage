@@ -287,6 +287,24 @@
     grid-template-columns: 1fr;
   }
 
+  /* 현장 사진 4장을 두 장씩 정렬하는 기사형 갤러리 */
+  .article-gallery.featured-four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .article-gallery.featured-four .article-figure {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .article-gallery.featured-four .article-image {
+    width: 100% !important;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+  }
+
   /* 첫 번째 사진은 왼쪽 전체,
    두 번째와 세 번째 사진은 오른쪽 위아래 */
   .article-gallery.left-large {
@@ -483,6 +501,11 @@
       object-fit: contain;
     }
 
+    .article-gallery.featured-four {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
   }
 
   /* =====================================================
@@ -563,6 +586,39 @@ const BANNER_IMAGE =
 
 
 const newsData = [
+  {
+    id: "2026-erau-seminar",
+
+    imageLayout: "featured-four",
+
+    images : [
+      { file: "2026-erau-seminar(1).jpg"},
+      { file: "2026-erau-seminar(2).jpg"},
+      { file: "2026-erau-seminar(3).jpg"},
+      { file: "2026-erau-seminar(4).jpg"}
+    ],
+
+    date: "Aug 23, 2026",
+
+    title: "Embry-Riddle Aeronautical University 세미나",
+
+    content: `
+    <p>
+      2026년 8월 21일 금요일, Embry-Riddle Aeronautical University (ERAU) 항공우주공학과의 David Canales 교수와 Daewon Kim 교수가 연세대학교를 방문했습니다. 
+      ERAU는 조한철 교수님께서 재직했던 곳으로, ASPROS와도 인연이 깊은 대학입니다. 
+      이번 방문은 ASPROS와 ERAU가 서로의 연구 현황을 공유하고 향후 협력 가능성을 논의하기 위해 마련되었습니다.
+    </p>
+    <p>
+      초청 세미나에서는 양 기관의 주요 연구 분야와 활동을 소개하고, 공동 연구와 지속적인 학술 교류를 위한 다양한 의견을 나누었습니다. 
+      이어 연세대학교 큐브위성 실험실과 지상국을 둘러보며 위성 개발 환경과 운용 시설을 살펴보는 시간을 가졌습니다.
+    </p>
+    <p>
+      이번 만남은 ASPROS와 ERAU가 연구 네트워크를 넓히고 실질적인 협력의 기반을 다지는 뜻깊은 자리였습니다. 앞으로도 두 기관 간 활발한 연구 교류와 새로운 공동 협력으로 이어지기를 기대합니다.
+    </p>
+    `
+  },
+  
+
   {
     id: "aeronautics-admission-information-seminar-2026",
 
@@ -1531,6 +1587,8 @@ function renderArticleImages(item) {
         ? "vertical"
         : item.imageLayout === "mixed-two"
           ? "mixed-two"
+          : item.imageLayout === "featured-four"
+            ? "featured-four"
           : ""; 
   
   return `
